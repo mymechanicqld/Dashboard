@@ -64,7 +64,7 @@
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; }
+    html, body { height: 100%; max-width: 100%; overflow-x: hidden; }
     body {
       background: var(--bg);
       color: var(--ink);
@@ -382,6 +382,7 @@
       border-radius: 12px;
       padding: 18px 20px;
       transition: box-shadow 0.2s;
+      min-width: 0; /* keep panel within its grid cell so wide charts scroll, not overflow */
     }
     .panel:hover { box-shadow: var(--shadow-sm); }
     .panel-header {
@@ -1049,12 +1050,36 @@
 
     /* ──────────────────────────────────── MOBILE ───────────────────────────── */
     @media (max-width: 760px) {
-      .topbar { gap: 10px; padding: 0 12px; }
+      /* Topbar wraps: row 1 = brand + live status, row 2 = full-width tabs */
+      .topbar {
+        flex-wrap: wrap;
+        height: auto;
+        min-height: 56px;
+        padding: 8px 12px;
+        gap: 8px 10px;
+      }
       .global-search { display: none; }
       .topbar .brand-sub { display: none; }
       .btn-seed { display: none; }
-      .tabs { margin-left: 6px; }
-      .tab { padding: 6px 10px; font-size: 12.5px; }
+      .topbar-spacer { display: none; }
+      .topbar-actions { margin-left: auto; }
+      .tabs {
+        order: 3;
+        width: 100%;
+        margin-left: 0;
+        gap: 4px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+      }
+      .tabs::-webkit-scrollbar { display: none; }
+      .tab {
+        flex: 1 1 0;
+        padding: 7px 8px;
+        font-size: 12.5px;
+        white-space: nowrap;
+        text-align: center;
+      }
       .pipeline {
         grid-template-columns: 1fr;
         gap: 16px;
